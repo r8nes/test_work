@@ -1,0 +1,73 @@
+// out: ../css/main.css, compress: true
+html,
+body {
+   background-color: hsl(0, 0%, 51%);
+   font-family: monospace;
+}
+
+.container {
+   margin: 30px;
+   h1 {
+      padding: 5px;
+      border-radius: 3px;
+      font-size: 35px;
+      text-align: center;
+      border: 1.9px solid rgb(78, 43, 94);
+      color: white;
+   }
+
+   .main-row {
+      display: flex;
+
+      .column {
+         background: rgb(150, 126, 164);
+         background: -moz-linear-gradient(top, rgba(150, 126, 164, 1) 0%, rgba(136, 106, 150, 1) 50%, rgba(93, 53, 109, 1) 51%, rgba(148, 103, 163, 1) 100%);
+         background: -webkit-linear-gradient(top, rgba(150, 126, 164, 1) 0%, rgba(136, 106, 150, 1) 50%, rgba(93, 53, 109, 1) 51%, rgba(148, 103, 163, 1) 100%);
+         background: linear-gradient(to bottom, rgba(150, 126, 164, 1) 0%, rgba(136, 106, 150, 1) 50%, rgba(93, 53, 109, 1) 51%, rgba(148, 103, 163, 1) 100%);
+         filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#967ea4', endColorstr='#9467a3', GradientType=0);
+
+         text-align: center;
+         font-size: 30px;
+         font-weight: 600;
+         color: white;
+      }
+   }
+
+   .row {
+      display: flex;
+      &:nth-child(odd) {
+         .column {
+            background-color: hsl(269, 21%, 77%);
+         }
+        
+      }
+   }
+
+
+
+   .column {
+      margin: 1px;
+      padding: 10px;
+      width: 100%;
+      min-height: 50px;
+      border: 1.9px solid rgb(78, 43, 94);
+      border-radius: 3px;
+      background-color: rgb(235, 227, 240);
+      font-size: 20px;
+      font-weight: 500;
+      text-align: center;
+   }
+
+   .column-1 {
+      min-width: 50px;
+   }
+
+   .column-2 {
+      min-width: 400px;
+      text-transform: capitalize;
+   }
+
+   .column-3 {
+      min-width: 130px;
+   }
+}
