@@ -2,7 +2,7 @@
 html,
 body {
    background-color: hsl(0, 0%, 70%);
-   font-family: monospace;
+   font-family: 'Marck Script', Courier, monospace;
 }
 
 .container {
@@ -17,25 +17,9 @@ body {
    h1 {
       color: #cd0000;
       font-size: 42px;
+      margin-left: 10px;
       letter-spacing: -2px;
       text-align: left;
-   }
-}
-
-.main-row {
-   display: flex;
-
-   .column {
-      background: rgb(150, 126, 164);
-      background: -moz-linear-gradient(top, rgba(150, 126, 164, 1) 0%, rgba(136, 106, 150, 1) 50%, rgba(93, 53, 109, 1) 51%, rgba(148, 103, 163, 1) 100%);
-      background: -webkit-linear-gradient(top, rgba(150, 126, 164, 1) 0%, rgba(136, 106, 150, 1) 50%, rgba(93, 53, 109, 1) 51%, rgba(148, 103, 163, 1) 100%);
-      background: linear-gradient(to bottom, rgba(150, 126, 164, 1) 0%, rgba(136, 106, 150, 1) 50%, rgba(93, 53, 109, 1) 51%, rgba(148, 103, 163, 1) 100%);
-      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#967ea4', endColorstr='#9467a3', GradientType=0);
-
-      text-align: center;
-      font-size: 30px;
-      font-weight: 600;
-      color: white;
    }
 }
 
@@ -45,22 +29,25 @@ body {
    padding: 0;
    border: 1px solid #dedede;
    font-size: 22px;
-   font-family: courier, monospace;
+   font-family: 'Marck Script', Courier, monospace;
    color: #555;
 
    li {
       display: flex;
+      justify-content: space-between;
       list-style: none;
       border-bottom: 1px dotted #ccc;
       height: auto;
-      padding: 10px 50px;
-      text-transform: capitalize;      
+      padding: 10px 20px 10px 50px;
+      text-transform: capitalize;
+
       &:hover {
          background-color: #f0f0f0;
       }
-      
-      p{
+
+      p {
          margin: 0 10px;
+
          &:last-child {
             text-align: right;
          }

@@ -12,40 +12,34 @@ async function getData(url) {
 
   return await response.json();
 }
-// function createMainRow() {
-//   const mainRow = `
-// <div class="main-row">
-//          <div class="column column-1"></div>
-//          <div class="column column-2"></div>
-//          <div class="column column-3"></div>
-//       </div>`;
 
-//   container.insertAdjacentHTML("beforeend", mainRow);
-// }
-function createRow({ ID, Name, Age }) {
-  const row = `
-  <li>
-    <p>${ID}</p>
-    <p>${Name}</p>
-    <p>${Age}</p>
-  </li>
-`;
-  list.insertAdjacentHTML("beforeend", row);
+function pGenerator(target, current) {
+ return current.forEach( value => {
+    let element = document.createElement("p");
+    element.innerHTML = value;
+    target.append(element);
+  });
+}
+
+function createMainRow(arr) {
+  const mainRow = document.createElement("li");
+  let uniqueRow = Array.from(new Set(arr.flatMap(Object.keys)));
+  pGenerator(mainRow, uniqueRow);
+  list.insertAdjacentElement("beforeend", mainRow);
+}
+
+function createRow(obj) {
+  const row = document.createElement("li");
+  const dataRow = Object.values(obj);
+  pGenerator(row, dataRow);
+  list.insertAdjacentElement("beforeend", row);
 }
 
 function initial() {
   getData("./db/test.json").then((data) => {
+    createMainRow(data);
     data.forEach(createRow);
   });
 }
 
 initial();
-
-let tast = [{ ID: 1, Some: "Reach" }, { "2": 2 }];
-
-function someTesting(arr) {
-  let may = new Map(Object.keys(arr[0]));
-  console.log(may);
-}
-
-someTesting(tast);
