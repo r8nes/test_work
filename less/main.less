@@ -1,4 +1,5 @@
 // out: ../css/main.css, compress: true
+
 html,
 body {
    background-color: hsl(0, 0%, 70%);
@@ -24,34 +25,29 @@ body {
 }
 
 .wrapper {
-   min-width: 500px;
-   margin: auto;
+   width: 100%;
    padding: 0;
    border: 1px solid #dedede;
+   border-collapse: collapse;
    font-size: 22px;
    font-family: 'Marck Script', Courier, monospace;
    color: #555;
 
-   li {
-      display: flex;
-      justify-content: space-between;
-      list-style: none;
-      border-bottom: 1px dotted #ccc;
-      height: auto;
-      padding: 10px 20px 10px 50px;
-      text-transform: capitalize;
-
+   tr {
       &:hover {
          background-color: #f0f0f0;
       }
+   }
 
-      p {
-         margin: 0 10px;
-
-         &:last-child {
-            text-align: right;
-         }
-      }
+   td,
+   th {
+      width: 100%;
+      text-align: center;
+      border-bottom: 1.4px dotted #ccc;
+      height: auto;
+      padding: 10px 20px 10px 50px;
+      text-transform: capitalize;      
+      border-spacing: 0;
    }
 }
 
