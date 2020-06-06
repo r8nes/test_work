@@ -75,20 +75,35 @@ function sortTable(n) {
 }
 
 function bindSortToTable () {
-  let thead = document.getElementsByTagName("TH");
-  console.log(thead, thead.length);
-  for (let i = 0; i<thead.length; i++) {
-    thead[i].addEventListener('click', () => {
+  let th = document.getElementsByTagName("TH");
+  for (let i = 0; i<th.length; i++) {
+    th[i].addEventListener('click', () => {
       sortTable(i);
     })
   }
 }
+
+function isAnyEmptyCells () {
+  let th = document.getElementsByTagName('th');
+  let tr = document.getElementsByTagName('tr');
+  for (let i = 0; i<tr.length; i++) {
+    let cellsLength = tr[i].cells.length;
+    while (cellsLength<th.length){
+      let td = document.createElement('td');
+        tr[i].appendChild(td);
+        cellsLength++;
+      }
+  }
+}
+
+
 
 function initial() {
   getData("./db/test.json").then((data) => {
     createMainRow(data);
     data.forEach(createRow);
     bindSortToTable();
+    isAnyEmptyCells();
 
   });
 }
