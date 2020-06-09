@@ -13,43 +13,45 @@ async function getData(url) {
   return await response.json();
 }
 
-function rowGenerator(target, arrowData, element) {
- return arrowData.forEach( value => {
+function rowGenerator(targetRow, arrowData, element) {
+  return arrowData.forEach((value) => {
     let row = document.createElement(`${element}`);
     row.innerHTML = value;
-    target.append(row);
+    targetRow.append(row);
   });
 }
 
-function createMainRow(arr) {
+function createHeadRow(arr) {
   const mainRow = document.createElement("tr");
   let uniqueRow = Array.from(new Set(arr.flatMap(Object.keys)));
-  rowGenerator(mainRow, uniqueRow, 'th');
+  rowGenerator(mainRow, uniqueRow, "th");
   list.insertAdjacentElement("beforeend", mainRow);
 }
 
 function createRow(obj) {
   const row = document.createElement("tr");
   const dataRow = Object.values(obj);
-  rowGenerator(row, dataRow, 'td');
+  rowGenerator(row, dataRow, "td");
   list.insertAdjacentElement("beforeend", row);
 }
 
-function sortTable(n) {
-
+function sortTable(columnn) {
   let count = 0;
   let switching = true;
-  let direction= "asc";
+  let direction = "asc";
 
   while (switching) {
     switching = false;
+
     let rows = list.getElementsByTagName("TR");
     let shouldSwitch = false;
+
     for (var i = 1; i < rows.length - 1; i++) {
-      let x = rows[i].getElementsByTagName("TD")[n];
-      let y = rows[i + 1].getElementsByTagName("TD")[n];
+      let x = rows[i].getElementsByTagName("TD")[columnn];
+      let y = rows[i + 1].getElementsByTagName("TD")[columnn];
+
       if (direction == "asc") {
-        if(undefined) continue;
+        if (undefined) continue;
         else if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
           shouldSwitch = true;
           break;
@@ -61,10 +63,11 @@ function sortTable(n) {
         }
       }
     }
+
     if (shouldSwitch) {
       rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
       switching = true;
-      count ++;
+      count++;
     } else {
       if (count == 0 && direction == "asc") {
         direction = "desc";
@@ -74,39 +77,54 @@ function sortTable(n) {
   }
 }
 
-function bindSortToTable () {
-  let th = document.getElementsByTagName("TH");
-  for (let i = 0; i<th.length; i++) {
-    th[i].addEventListener('click', () => {
+function bindSortToTable() {
+  let tableHead = document.getElementsByTagName("TH");
+  for (let i = 0; i < tableHead.length; i++) {
+    tableHead[i].addEventListener("click", () => {
       sortTable(i);
-    })
+    });
   }
 }
 
-function isAnyEmptyCells () {
-  let th = document.getElementsByTagName('th');
-  let tr = document.getElementsByTagName('tr');
-  for (let i = 0; i<tr.length; i++) {
+function isAnyCellsEmpty() {
+  let tableHead = document.getElementsByTagName("TH");
+  let tr = document.getElementsByTagName("tr");
+  for (let i = 0; i < tr.length; i++) {
     let cellsLength = tr[i].cells.length;
-    while (cellsLength<th.length){
-      let td = document.createElement('td');
-        tr[i].appendChild(td);
-        cellsLength++;
-      }
+    while (cellsLength < tableHead.length) {
+      let td = document.createElement("td");
+      tr[i].appendChild(td);
+      cellsLength++;
+    }
   }
 }
 
+function createCloseButton() {
 
+  let tableRow = document.getElementsByTagName("tr");
+
+  for (let i = 1; i < tableRow.length; i++) {
+    let closeBtn = document.createElement("a");
+    closeBtn.classList.add("close");
+    tableRow[i].insertAdjacentElement("beforeend", closeBtn);
+  }
+
+  let btnList = document.querySelectorAll(".close");
+  btnList.forEach( (btn) => {
+    btn.addEventListener('click', () => {
+      btn.parentNode.parentNode.removeChild(btn.parentNode);
+    })
+  })
+}
 
 function initial() {
   getData("./db/test.json").then((data) => {
-    createMainRow(data);
+    createHeadRow(data);
     data.forEach(createRow);
     bindSortToTable();
-    isAnyEmptyCells();
-
+    isAnyCellsEmpty();
+    createCloseButton();
   });
 }
 
 initial();
-

@@ -34,9 +34,22 @@ body {
    color: #555;
 
    tr {
+      position: relative;
       &:hover {
          background-color: #f0f0f0;
+         .close {
+            transition: all 0.4s;
+            opacity: 0.4;
+         }
       }
+   }
+
+   th {
+      cursor: pointer;
+   }
+
+   td {
+      cursor: default;
    }
 
    td,
@@ -45,8 +58,9 @@ body {
       border-bottom: 1.4px dotted #ccc;
       height: auto;
       padding: 10px 20px 10px 50px;
-      text-transform: capitalize;      
+      text-transform: capitalize;
       border-spacing: 0;
+
    }
 }
 
@@ -57,4 +71,31 @@ body {
    width: 2px;
    height: 100%;
    margin-left: 40px;
+}
+
+.close {
+   position: absolute;;
+   right: 27px;
+   opacity: 0;
+   &:hover {
+      opacity: 1 !important;
+   }
+   &:before,
+   &:after {
+      position: absolute;
+      top:2px;
+      left: 12px;
+      content: ' ';
+      height: 15px;
+      width: 4px;
+      background-color:red;
+   }
+
+   &:before {
+      transform: rotate(45deg);
+   }
+
+   &:after {
+      transform: rotate(-45deg);
+   }
 }
