@@ -35,9 +35,11 @@ body {
 
    tr {
       position: relative;
+
       &:hover {
          background-color: #f0f0f0;
-           .close {
+
+         .close {
             transition: all 0.4s;
             opacity: 0.4;
          }
@@ -74,21 +76,23 @@ body {
 }
 
 .close {
-   position: absolute;;
+   position: absolute;
    right: 27px;
    opacity: 0;
+
    &:hover {
       opacity: 1 !important;
    }
+
    &:before,
    &:after {
       position: absolute;
-      top:2px;
+      top: 2px;
       left: 12px;
       content: ' ';
       height: 15px;
       width: 4px;
-      background-color:red;
+      background-color: red;
    }
 
    &:before {
@@ -111,16 +115,18 @@ body {
    height: 100%;
    z-index: 9;
    background-color: rgba(0, 0, 0, 0.5);
+
    &-content {
       position: fixed;
       left: 50%;
-      top: 30%;
+      top: 20%;
       transform: translateX(-50%);
       padding: 30px 60px;
       background-color: white;
       text-align: center;
-      border-radius:3px;
+      border-radius: 3px;
    }
+
    &-close {
       position: absolute;
       top: -15px;
@@ -131,52 +137,58 @@ body {
       font-size: 30px;
       text-align: center;
       color: white;
+
       &:focus {
          outline: none
       }
    }
-
 }
 
 .form {
    &-control {
       position: relative;
       margin-bottom: 30px;
+
       input {
          display: block;
          border: 1px solid gray;
-         padding:  10px 20px;
+         padding: 10px 20px;
          border-radius: 2px;
+
          &:focus {
             outline: none;
          }
+
          &:-webkit-autofill:focus {
-            -webkit-box-shadow: 0 0 5px 0    white, 
-                          inset 0 0 0   50px white;
+            -webkit-box-shadow: 0 0 5px 0 white,
+               inset 0 0 0 50px white;
             -webkit-text-fill-color: black;
-        }
+         }
+
          &:-webkit-autofill {
-            -webkit-box-shadow:  0 0 5px 0    white, 
-            inset 0 0 0   50px white;
+            -webkit-box-shadow: 0 0 5px 0 white,
+               inset 0 0 0 50px white;
             -webkit-text-fill-color: black;
-        }
+         }
       }
-           
    }
+
    label {
       position: absolute;
       left: 50%;
       transform: translateX(-50%) translateY(-50%);
-      padding: 0 1px 0;
+      padding: 0 3px 0;
       background-color: white;
-      font-size: 13px;
+      font-size: 15px;
    }
+
    i {
       position: absolute;
       top: 10px;
-      right:4px;
+      right: 4px;
       visibility: hidden;
    }
+
    small {
       position: absolute;
       display: block;
@@ -184,10 +196,11 @@ body {
       left: 0;
       visibility: hidden;
    }
+
    &-btn {
       display: block;
       width: 100%;
-      padding:8px;
+      padding: 8px;
       font-size: 16px;
       margin: auto;
       border: none;
@@ -197,29 +210,31 @@ body {
 
 .valid {
    input {
-         border-color: green;
+      border-color: green;
+   }
+
+   i {
+      &.fa-check-circle {
+         visibility: visible;
+         color: green;
       }
-      i {
-         &.fa-check-circle {
-            visibility: visible;
-            color: green;
-         }
-      }
+   }
 }
 
 .invalid {
-   input{
+   input {
       border-color: red;
    }
+
    i {
       &.fa-exclamation-circle {
          visibility: visible;
          color: red;
       }
    }
+
    small {
       visibility: visible;
       color: red;
    }
 }
-

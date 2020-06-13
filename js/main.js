@@ -1,7 +1,10 @@
 "use strict";
 
-const list = document.querySelector(".wrapper");
+const list = getSelector('wrapper');
 
+function getSelector (selector) {
+return document.querySelector(`.${selector}`);
+}
 async function getData(url) {
   const response = await fetch(url);
 
@@ -35,7 +38,8 @@ function createRow(obj) {
   list.insertAdjacentElement("beforeend", row);
 }
 
-function sortTable(columnn) {
+function sortTable(column) {
+  
   let count = 0;
   let switching = true;
   let direction = "asc";
@@ -47,8 +51,8 @@ function sortTable(columnn) {
     let shouldSwitch = false;
 
     for (var i = 1; i < rows.length - 1; i++) {
-      let x = rows[i].getElementsByTagName("TD")[columnn];
-      let y = rows[i + 1].getElementsByTagName("TD")[columnn];
+      let x = rows[i].getElementsByTagName("TD")[column];
+      let y = rows[i + 1].getElementsByTagName("TD")[column];
 
       if (direction == "asc") {
         if (undefined) continue;
@@ -100,6 +104,7 @@ function isAnyCellsEmpty() {
 }
 
 function createCloseButton() {
+
   let tableRow = document.getElementsByTagName("tr");
 
   for (let i = 1; i < tableRow.length; i++) {
@@ -177,32 +182,39 @@ function createPopupWindow() {
 }
 
 function popupLogic() {
-  const button = document.querySelector(".add-row-btn");
-  const popup = document.querySelector(".popup");
-  const closeButton = document.querySelector(".popup-close");
+  const button = getSelector("add-row-btn");
+  const popup = getSelector("popup");
+  const closeBtn = getSelector("popup-close");
   button.addEventListener("click", () => {
     return (popup.style.display = "block");
   });
 
-  closeButton.addEventListener("click", () => {
-    return (popup.style.display = "none");
-  });
+  closeBtn.addEventListener("click", () => {
+    popup.style.display = "none"  
+  })
 
-
+  closeSmth(closeBtn, popup);
 }
 
-
-
+function closeSmth (button, target) {
+    button.addEventListener("click", () => {
+    target.style.display = "none";  
+    });
+ }
 
 function submitBtn () {
-  const formBtn = document.querySelector('.form-btn');
+  const formBtn = getSelector('form-btn');
+  const popup = getSelector('popup');
   formBtn.addEventListener('click', (e) => {
-    console.log(true);
     e.preventDefault();
-    checkInputs();
-  })
+    let check = checkInputs();
+    if(check.validator) {
+      delete check.validator;
+      createRow(check);
+      popup.style.display = 'none';
+    }     
+  });
 }
-
 
 function checkInputs () {
 
@@ -211,34 +223,47 @@ function checkInputs () {
   const age = document.getElementById('age');
 
 
-  const userNameValue = userName.value;
+  const userNameValue = userName.value.trim();
   const userIdValue = userId.value.trim();
   const ageValue = age.value.trim();
 
+  let inputData = {
+    validator: true,    
+  };
+  
   for (let i = 0; i<3;i++) {
     clearForm(i);
   }
 
   if (userNameValue === '') {
-    setInvalidFor(userName, 'Error, not valid.')
+    setInvalidFor(userName, 'Not valid.');
+    inputData.validator = false;
   }
   else {
     setValidFor(userName);
+    inputData.name = userNameValue;
   }
 
   if (userIdValue === '') {
-    setInvalidFor(userId, 'Error , ID is exist')
+    setInvalidFor(userId, 'ID is exist');
+    inputData.validator = false;
   }
   else {
     setValidFor(userId);
+        inputData.id = userIdValue;
   }
 
   if (ageValue === '') {
-    setInvalidFor(age, 'Enter person\'s age')
+    setInvalidFor(age, 'Enter person\'s age');
+    inputData.validator = false;
   }
   else {
     setValidFor(age);
+    inputData.age = ageValue;
   }
+  console.log(inputData);
+
+  return inputData;
 }
 
 function setInvalidFor (input, message) {
@@ -264,26 +289,4 @@ function clearForm (input) {
   else {
   formControl.className = 'form-control';}
 }
-// let inputs = document.querySelectorAll("input[data-rule]");
 
-// for (let input of inputs) {
-//   input.addEventListener("blur", function () {
-//     let rule = this.dataset.rule;
-//     let value = this.value;
-//     let check;
-//     switch (rule) {
-//       case "length":
-//         let from = +this.dataset.from;
-//         let to = +this.dataset.to;
-//         let regex = new RegExp(`<{${from},${to}}>`, "gm");
-//         check = regex.test(value);
-//         break;
-
-//       case "number":
-//         check = /\S[0-9]/gm.test(value);
-//         break;
-//     }
-   
-    
-//   });
-// }
