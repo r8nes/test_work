@@ -1,10 +1,11 @@
 "use strict";
 
-const list = getSelector('wrapper');
+const list = getSelector("wrapper");
 
-function getSelector (selector) {
-return document.querySelector(`.${selector}`);
+function getSelector(selector) {
+  return document.querySelector(`.${selector}`);
 }
+
 async function getData(url) {
   const response = await fetch(url);
 
@@ -39,7 +40,6 @@ function createRow(obj) {
 }
 
 function sortTable(column) {
-  
   let count = 0;
   let switching = true;
   let direction = "asc";
@@ -103,22 +103,43 @@ function isAnyCellsEmpty() {
   }
 }
 
-function createCloseButton() {
-
+function createDeleteButton() {
   let tableRow = document.getElementsByTagName("tr");
 
   for (let i = 1; i < tableRow.length; i++) {
     let closeBtn = document.createElement("a");
-    closeBtn.classList.add("close");
-    tableRow[i].insertAdjacentElement("beforeend", closeBtn);
-  }
-
-  let btnList = document.querySelectorAll(".close");
-  btnList.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      btn.parentNode.parentNode.removeChild(btn.parentNode);
+    closeBtn.classList.add("delete");
+    tableRow[i].append(closeBtn);
+    closeBtn.addEventListener("click", () => {
+      closeBtn.parentNode.parentNode.removeChild(closeBtn.parentNode);
     });
-  });
+  }
+}
+
+function createEditButton(editor, dataStore, logic) {
+
+  let tableRow = document.getElementsByTagName("tr");
+
+  for (let i = 1; i < tableRow.length; i++) {
+    let closeBtn = document.createElement("button");
+    closeBtn.innerText = "EDIT";
+    closeBtn.classList.add("edit");
+    tableRow[i].append(closeBtn);
+    closeBtn.addEventListener("click", () => {
+      let getStore = dataStore(closeBtn);
+      editor(getStore, logic);
+    });
+  }
+}
+
+function rowStore(button) {
+  let store = [];
+  let row = button.parentNode;
+  for (let i = 0; i < row.childElementCount - 2; i++) {
+    let cellValue = row.cells[i].innerText;
+    store.push(cellValue);
+  }
+  return store;
 }
 
 function initial() {
@@ -127,11 +148,12 @@ function initial() {
     data.forEach(createRow);
     bindSortToTable(sortTable);
     isAnyCellsEmpty();
-    createCloseButton();
+    createDeleteButton();
+    createEditButton(createEditWindow, rowStore, editWindowLogic);
   });
-createPopupWindow();
-popupLogic();
-submitBtn();
+  createPopupWindow();
+  popupLogic();
+  submitBtn();
 }
 
 initial();
@@ -172,8 +194,8 @@ function createPopupWindow() {
             </div>      		
 
 					  </form>
-          <button class='popup-close'>&times;</button>
-          <button class="form-btn" type="submit">Сохранить</button>
+          <button class='close popup-close'>&times;</button>
+          <button class="btn form-btn" type="submit">Сохранить</button>
         </div>
     </div>`
   );
@@ -181,83 +203,130 @@ function createPopupWindow() {
   document.body.insertAdjacentElement("beforeend", popup);
 }
 
+function createEditWindow([id, name, age], logic) {
+  const popup = document.createElement("div");
+  popup.className = "window";
+  popup.insertAdjacentHTML(
+    "beforeend",
+    `<div class='window-container'>
+        <div class='window-content'>
+        <h2>Введите данные</h2>
+
+        <form class="form" id="form">
+
+            <div class="form-control">
+            <label for="user-id">ID</label>
+            <input class="form-input" id="user-id" value='${id}'>
+            <i class="fas fa-check-circle"></i>
+            <i class="fas fa-exclamation-circle"></i>
+      <small>Wrong message</small>
+            </div>
+
+            <div class="form-control">
+            <label for="name">NAME</label>
+            <input class="form-input" id="name" value='${name}'>
+            <i class="fas fa-check-circle"></i>
+            <i class="fas fa-exclamation-circle"></i>
+      <small>Wrong message</small>
+            </div>
+
+            <div class="form-control">
+            <label for="age">AGE</label>
+            <input class="form-input" id="age" value='${age}'>
+            <i class="fas fa-check-circle"></i>
+            <i class="fas fa-exclamation-circle"></i>
+      <small>Wrong message</small>
+            </div>      		
+
+					  </form>
+          <button class='close edit-close'>&times;</button>
+          <button class="btn edit-btn" type="submit">Сохранить</button>
+        </div>
+    </div>`
+  );
+  document.body.insertAdjacentElement("beforeend", popup);
+  popup.style.display = "block";
+
+  logic();
+}
+
+function editWindowLogic() {
+  const editor = getSelector("window");
+  const closeBtn = getSelector("edit-close");
+  closeBtn.addEventListener("click", () => {
+    editor.parentNode.removeChild(editor);
+  });
+}
+
 function popupLogic() {
   const button = getSelector("add-row-btn");
   const popup = getSelector("popup");
   const closeBtn = getSelector("popup-close");
+
   button.addEventListener("click", () => {
     return (popup.style.display = "block");
   });
 
   closeBtn.addEventListener("click", () => {
-    popup.style.display = "none"  
-  })
+    popup.style.display = "none";
+  });
 
-  closeSmth(closeBtn, popup);
-}
-
-function closeSmth (button, target) {
-    button.addEventListener("click", () => {
-    target.style.display = "none";  
-    });
- }
-
-function submitBtn () {
-  const formBtn = getSelector('form-btn');
-  const popup = getSelector('popup');
-  formBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    let check = checkInputs();
-    if(check.validator) {
-      delete check.validator;
-      createRow(check);
-      popup.style.display = 'none';
-    }     
+  closeBtn.addEventListener("click", () => {
+    popup.style.display = "none";
   });
 }
 
-function checkInputs () {
+function submitBtn() {
+  const formBtn = getSelector("form-btn");
+  const popup = getSelector("popup");
+  formBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    let check = checkInputs();
+    if (check.validator) {
+      delete check.validator;
+      createRow(check);
+      popup.style.display = "none";
+    }
+  });
+}
 
-  const userName = document.getElementById('name');
-  const userId = document.getElementById('user-id');
-  const age = document.getElementById('age');
-
+function checkInputs() {
+  const userName = document.getElementById("name");
+  const userId = document.getElementById("user-id");
+  const age = document.getElementById("age");
 
   const userNameValue = userName.value.trim();
   const userIdValue = userId.value.trim();
   const ageValue = age.value.trim();
 
   let inputData = {
-    validator: true,    
+    validator: true,
   };
-  
-  for (let i = 0; i<3;i++) {
+
+  for (let i = 0; i < 3; i++) {
     clearForm(i);
   }
 
-  if (userNameValue === '') {
-    setInvalidFor(userName, 'Not valid.');
+  if (userNameValue === "") {
+    setInvalidFor(userName, "Not valid.");
     inputData.validator = false;
-  }
-  else {
+  } else {
     setValidFor(userName);
     inputData.name = userNameValue;
   }
 
-  if (userIdValue === '') {
-    setInvalidFor(userId, 'ID is exist');
+  if (userIdValue === "") {
+    setInvalidFor(userId, "ID is exist");
     inputData.validator = false;
-  }
-  else {
+  } else {
     setValidFor(userId);
-        inputData.id = userIdValue;
+    inputData.id = userIdValue;
   }
 
-  if (ageValue === '') {
-    setInvalidFor(age, 'Enter person\'s age');
+  if (ageValue === "") {
+    setInvalidFor(age, "Enter person's age");
     inputData.validator = false;
-  }
-  else {
+  } else {
     setValidFor(age);
     inputData.age = ageValue;
   }
@@ -266,27 +335,25 @@ function checkInputs () {
   return inputData;
 }
 
-function setInvalidFor (input, message) {
+function setInvalidFor(input, message) {
   const formControl = input.parentElement;
-  const errorMsg = formControl.querySelector('small');
-  
+  const errorMsg = formControl.querySelector("small");
+
   errorMsg.innerText = message;
-  formControl.className = 'form-control invalid'
+  formControl.className = "form-control invalid";
   return false;
 }
 
-function setValidFor (input) {
-  const formControl = input.parentElement;  
-  formControl.className = 'form-control valid'
-
-}
-
-function clearForm (input) {
+function setValidFor(input) {
   const formControl = input.parentElement;
-  if(formControl === undefined) {
-    return null;
-  }
-  else {
-  formControl.className = 'form-control';}
+  formControl.className = "form-control valid";
 }
 
+function clearForm(input) {
+  const formControl = input.parentElement;
+  if (formControl === undefined) {
+    return null;
+  } else {
+    formControl.className = "form-control";
+  }
+}
