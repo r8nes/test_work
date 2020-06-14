@@ -38,7 +38,8 @@ body {
 
       &:hover {
          background-color: #f0f0f0;
-         .edit, 
+
+         .edit,
          .delete {
             transition: all 0.4s;
             opacity: 0.4;
@@ -105,7 +106,6 @@ body {
 }
 
 .popup {
-   display: none;
    position: fixed;
    left: 0;
    right: 0;
@@ -126,8 +126,6 @@ body {
       text-align: center;
       border-radius: 3px;
    }
-
-   
 }
 
 .close {
@@ -185,6 +183,12 @@ body {
             outline: none;
          }
 
+         &::-webkit-outer-spin-button,
+         &::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+         }
+
          &:-webkit-autofill:focus {
             -webkit-box-shadow: 0 0 5px 0 white,
                inset 0 0 0 50px white;
@@ -224,15 +228,34 @@ body {
    }
 
 }
+
+.add-row-btn {
+   position: absolute;
+   top: 50px;
+   right: 20px;
+   color: red;
+   border: none;
+   background-color: transparent;
+   font-size: 16px;
+   font-family: inherit;
+   cursor: pointer;
+   outline: none;
+}
+
 .btn {
    display: block;
+   background-color: rgb(235, 235, 235);
    width: 100%;
    padding: 8px;
    font-size: 16px;
    margin: auto;
    border: none;
    border-radius: 3px;
+   outline: none;
+   font-family: inherit;
+   font-size: 20px;
 }
+
 .valid {
    input {
       border-color: green;
@@ -264,7 +287,7 @@ body {
    }
 }
 
-.edit{
+.edit {
    position: absolute;
    border: 1px solid red;
    right: 1.5px;
@@ -274,6 +297,7 @@ body {
    font-size: 10px;
    outline: none;
    opacity: 0;
+
    &:hover {
       opacity: 1 !important;
    }
